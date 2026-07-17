@@ -1,14 +1,16 @@
-    layout {
-        gaps 16 // Gap between windows
-        center-focused-column "never" // Don’t auto-center focused column
+// Геометрия окон / Window geometry
+layout {
+    gaps 10
+    center-focused-column "never"
+    background-color "transparent"
 
-        background-color "transparent" // <- needed for noctalia-shell to set wallpaper
-
-        preset-column-widths {
-            proportion 0.33333
-            proportion 0.5
-            proportion 0.66667
-        }
-
-        struts {}
+    // Удобно для обычных и широких мониторов / Good for regular and ultrawide screens
+    preset-column-widths {
+        proportion 0.33333
+        proportion 0.5
+        proportion 0.66667
     }
+
+    default-column-width { proportion 0.5; }
+    struts {}
+}

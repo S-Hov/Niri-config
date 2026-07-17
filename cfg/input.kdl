@@ -1,19 +1,28 @@
-// ────────────── Input Configuration ──────────────
-// https://github.com/YaLTeR/niri/wiki/Configuration:-Input
-
+// Ввод и раскладки / Input and keyboard layouts
 input {
     keyboard {
         xkb {
-            layout "us" // Use the American keyboard layout
+            // English + русская фонетическая; Alt+Shift переключает / toggles
+            layout "us,ru"
+            variant ",phonetic"
+            options "grp:alt_shift_toggle"
         }
-        numlock // Enable numlock on startup
+        numlock
+        repeat-delay 300
+        repeat-rate 35
     }
 
     touchpad {
-        tap // Enable tap-to-click
-        natural-scroll // Enable natural (macOS-style) scrolling
+        tap
+        dwt
+        natural-scroll
     }
 
-    focus-follows-mouse // Automatically focus windows under the mouse pointer
-    workspace-auto-back-and-forth // Enable workspace back & forth switching
+    mouse {
+        accel-profile "flat"
+        accel-speed 0.0
+    }
+
+    // Фокус меняется только кликом или клавишами / No focus-follows-mouse
+    workspace-auto-back-and-forth
 }

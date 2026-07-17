@@ -1,9 +1,47 @@
-// ────────────── Output Configuration ──────────────
-// You can run `niri msg outputs` to get the correct name for your displays.
-// You will have to remove "/-" and edit it before it takes effect.
-// https://github.com/YaLTeR/niri/wiki/Configuration:-Outputs
+// Имена и режимы: `niri msg outputs` / Names and modes: `niri msg outputs`
 
-/- output "DP-1" {
-    mode "2560x1440@359.979" // Set resolution and refresh rate
-    scale 1 // No scaling (use 2 for HiDPI)
+// Текущий 2560x1440 монитор / Current 2560x1440 monitor
+output "DP-1" {
+    mode "2560x1440@359.979"
+    scale 1
+    transform "normal"
+    position x=0 y=0
+    focus-at-startup
+}
+
+// Новый 34\" 4K справа / New 34\" 4K on the right
+// Без герцовки niri выберет максимальную / Highest refresh rate is selected
+output "DP-2" {
+    mode "3840x2160"
+    scale 1.25
+    transform "normal"
+    position x=2560 y=0
+}
+
+// Если новый монитор подключён по HDMI, замените DP-2 на HDMI-A-1.
+// If connected over HDMI, replace DP-2 with HDMI-A-1.
+
+// Популярные альтернативы / Popular alternatives
+/-output "DP-2" { // 34\" ultrawide UWQHD
+    mode "3440x1440"
+    scale 1
+    position x=2560 y=0
+}
+
+/-output "DP-2" { // 27\" QHD
+    mode "2560x1440"
+    scale 1
+    position x=2560 y=0
+}
+
+/-output "DP-2" { // Full HD
+    mode "1920x1080"
+    scale 1
+    position x=2560 y=0
+}
+
+/-output "eDP-1" { // Laptop panel / Экран ноутбука
+    mode "1920x1080"
+    scale 1
+    position x=0 y=0
 }

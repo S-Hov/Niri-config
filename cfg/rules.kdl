@@ -1,9 +1,17 @@
-    window-rule {
-        geometry-corner-radius 20 // Set every window radius to 20
-        clip-to-geometry true
-    }
+// Общий визуальный стиль / Shared visual style
+window-rule {
+    geometry-corner-radius 14
+    clip-to-geometry true
+}
 
-    layer-rule {
-        match namespace="^noctalia-wallpaper*"
-        place-within-backdrop true
-    }
+// Picture-in-Picture сразу плавающее / PiP opens floating
+window-rule {
+    match title="^Picture-in-Picture$"
+    open-floating true
+}
+
+// Обои Noctalia остаются за окнами / Keep Noctalia wallpaper behind windows
+layer-rule {
+    match namespace="^noctalia-wallpaper*"
+    place-within-backdrop true
+}
