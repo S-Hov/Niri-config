@@ -1,3 +1,3 @@
-// Автозапуск оболочки и Polkit / Shell and Polkit autostart
-spawn-sh-at-startup "/usr/lib/polkit-kde-authentication-agent-1 &"
-spawn-sh-at-startup "qs -c noctalia-shell"
+// Автозапуск Noctalia v5 и Polkit / Noctalia v5 and Polkit autostart
+spawn-at-startup "/usr/lib/polkit-kde-authentication-agent-1"
+spawn-at-startup "noctalia"

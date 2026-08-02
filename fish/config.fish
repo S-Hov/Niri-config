@@ -170,7 +170,11 @@ function pac --description "Упрощённый интерфейс для pacma
                 return 1
             end
 
-            command $helper -Sw $argv
+            if test $helper = pacman
+                sudo command pacman -Sw $argv
+            else
+                command $helper -Sw $argv
+            end
 
         case help h --help -h
             __pac_help $helper

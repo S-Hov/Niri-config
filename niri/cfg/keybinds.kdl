@@ -6,7 +6,7 @@ binds {
     Mod+D hotkey-overlay-title="App launcher / Меню приложений" { spawn "noctalia" "msg" "panel-toggle" "launcher"; }
     Mod+B hotkey-overlay-title="Browser / Браузер: Firefox" { spawn "firefox"; }
     Mod+E hotkey-overlay-title="Files / Файлы: Nautilus" { spawn "nautilus"; }
-    Mod+Alt+L hotkey-overlay-title="Lock / Блокировка" allow-inhibiting=false { spawn "noctalia" "msg" "lock"; }
+    Mod+Alt+L hotkey-overlay-title="Lock / Блокировка" allow-inhibiting=false { spawn "noctalia" "msg" "session" "lock"; }
 
 
     // Фокус окон / Window focus
@@ -88,9 +88,9 @@ binds {
     Shift+Print { screenshot-screen; }
     Ctrl+Print  { screenshot-window; }
 
-    // Звук через Noctalia / Audio via Noctalia
-    XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "qs -c noctalia-shell ipc call volume increase"; }
-    XF86AudioLowerVolume allow-when-locked=true { spawn-sh "qs -c noctalia-shell ipc call volume decrease"; }
-    XF86AudioMute        allow-when-locked=true { spawn-sh "qs -c noctalia-shell ipc call volume muteOutput"; }
-    XF86AudioMicMute     allow-when-locked=true { spawn-sh "qs -c noctalia-shell ipc call volume muteInput"; }
+    // Звук через Noctalia v5 / Audio via Noctalia v5
+    XF86AudioRaiseVolume allow-when-locked=true { spawn "noctalia" "msg" "volume-up"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn "noctalia" "msg" "volume-down"; }
+    XF86AudioMute        allow-when-locked=true { spawn "noctalia" "msg" "volume-mute"; }
+    XF86AudioMicMute     allow-when-locked=true { spawn "noctalia" "msg" "mic-mute"; }
 }

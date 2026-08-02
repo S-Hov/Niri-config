@@ -10,8 +10,16 @@ window-rule {
     open-floating true
 }
 
+// Окно настроек Noctalia v5 / Noctalia v5 settings window
+window-rule {
+    match app-id="dev.noctalia.Noctalia"
+    open-floating true
+    default-column-width { fixed 1080; }
+    default-window-height { fixed 920; }
+}
+
 // Обои Noctalia остаются за окнами / Keep Noctalia wallpaper behind windows
 layer-rule {
-    match namespace="^noctalia-wallpaper*"
+    match namespace="^noctalia-wallpaper"
     place-within-backdrop true
 }
