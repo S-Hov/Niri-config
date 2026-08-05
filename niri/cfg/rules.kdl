@@ -10,10 +10,12 @@ window-rule {
     open-floating true
 }
 
-// Браузеры открываются на весь экран / Browsers open maximized
+// Браузеры открываются во всю ширину / Browsers open full width
 window-rule {
+    match app-id="thorium-browser"
     match app-id="thorium-browser-avx2"
     match app-id="firefox"
+    default-column-width { proportion 1.0; }
     open-maximized true
 }
 
