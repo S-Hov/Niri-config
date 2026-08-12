@@ -1,8 +1,8 @@
 // Ввод и раскладки / Input and keyboard layouts
 gestures {
-    hot-corners {
-        off
-    }
+   hot-corners {
+	   off
+   }
 }
 
 input {

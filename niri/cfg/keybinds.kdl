@@ -4,7 +4,7 @@ binds {
     // Приложения / Applications
     Mod+Return hotkey-overlay-title="Terminal / Терминал: Kitty" { spawn "kitty"; }
     Mod+D hotkey-overlay-title="App launcher / Меню приложений" { spawn "noctalia" "msg" "panel-toggle" "launcher"; }
-    Mod+B hotkey-overlay-title="Browser / Браузер: Firefox" { spawn "firefox"; }
+    Mod+B hotkey-overlay-title="Browser / Браузер: Thorium" { spawn "thorium-browser-avx2" "--ozone-platform=wayland" "--enable-features=UseOzonePlatform,Vulkan,VulkanFromANGLE" "--ignore-gpu-blocklist" "--disable-features=UseChromeOSDirectVideoDecoder"; }
     Mod+E hotkey-overlay-title="Files / Файлы: Nautilus" { spawn "nautilus"; }
     Mod+V hotkey-overlay-title="Clipboard / Буфер обмена" { spawn "noctalia" "msg" "panel-toggle" "clipboard"; }
     Mod+Alt+L hotkey-overlay-title="Lock / Блокировка" allow-inhibiting=false { spawn "noctalia" "msg" "session" "lock"; }
@@ -27,9 +27,9 @@ binds {
     Mod+Shift+Left  { move-column-left; }
     Mod+Shift+Right { move-column-right; }
     Mod+Shift+Up    { move-window-up; }
-    Mod+Shift+J     { move-window-up; }
+    Mod+Shift+J    { move-window-up; }
     Mod+Shift+Down  { move-window-down; }
-    Mod+Shift+K     { move-window-down; }
+    Mod+Shift+K  { move-window-down; }
     Mod+Shift+Home  { move-column-to-first; }
     Mod+Shift+End   { move-column-to-last; }
 
@@ -48,9 +48,9 @@ binds {
 
     // Рабочие столы: Ctrl+Up/Down — соседний / Workspaces: adjacent
     Mod+Ctrl+Up   { focus-workspace-up; }
-    Mod+Ctrl+J    { focus-workspace-up; }
+    Mod+Ctrl+J   { focus-workspace-up; }
     Mod+Ctrl+Down { focus-workspace-down; }
-    Mod+Ctrl+K    { focus-workspace-down; }
+    Mod+Ctrl+K { focus-workspace-down; }
     Mod+Ctrl+Shift+Up   { move-column-to-workspace-up; }
     Mod+Ctrl+Shift+Down { move-column-to-workspace-down; }
     Mod+Tab { focus-workspace-previous; }
@@ -105,7 +105,7 @@ binds {
 
     // Переключение на следующую раскладку СТРОГО по Alt + Левый Shift
     //Alt+Shift_L cooldown=allow { spawn "niri" "msg" "action" "switch-layout" "next"; }
-
+        
     // Если нужно, чтобы правый Shift тоже работал:
     // Alt+Shift_R { switch-layout "next"; }
 }

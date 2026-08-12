@@ -19,6 +19,7 @@ window-rule {
     open-maximized true
 }
 
+
 // Окно настроек Noctalia v5 / Noctalia v5 settings window
 window-rule {
     match app-id="dev.noctalia.Noctalia"
