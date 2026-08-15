@@ -8,10 +8,9 @@ gestures {
 input {
     keyboard {
         xkb {
-            // English + русская фонетическая; Alt+Shift переключает / toggles
+            // English + русская фонетическая
             layout "us,ru"
             variant ",phonetic"
-            options "grp:alt_shift_toggle"
         }
         numlock
         repeat-delay 300

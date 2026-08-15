@@ -38,7 +38,7 @@ binds {
     Mod+Ctrl+C  { center-visible-columns; }
     Mod+F       { fullscreen-window; }
     Mod+Ctrl+F  { expand-column-to-available-width; }
-    Mod+Space   { toggle-window-floating; }
+    Mod+T       { toggle-window-floating; }
     Mod+W       { toggle-column-tabbed-display; }
     Mod+R       { switch-preset-column-width; }
     Mod+Minus       { set-column-width "-5%"; }
@@ -103,9 +103,6 @@ binds {
     XF86AudioMute        allow-when-locked=true { spawn "noctalia" "msg" "volume-mute"; }
     XF86AudioMicMute     allow-when-locked=true { spawn "noctalia" "msg" "mic-mute"; }
 
-    // Переключение на следующую раскладку СТРОГО по Alt + Левый Shift
-    //Alt+Shift_L cooldown=allow { spawn "niri" "msg" "action" "switch-layout" "next"; }
-        
-    // Если нужно, чтобы правый Shift тоже работал:
-    // Alt+Shift_R { switch-layout "next"; }
+    // Переключение раскладки по Meta + Space (Win + Space)
+    Mod+Space { switch-layout "next"; }
 }
