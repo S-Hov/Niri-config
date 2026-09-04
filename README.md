@@ -12,6 +12,7 @@
 | [`kitty/`](kitty/README.md) | Терминал, Nerd Font и цветовая тема Noctalia | `~/.config/kitty/` |
 | [`fish/`](fish/README.md) | Интерактивная оболочка, Tide, Fisher и команда `pac` | `~/.config/fish/` |
 | [`yazi/`](yazi/README.md) | Терминальный файловый менеджер и пользовательские клавиши | `~/.config/yazi/` |
+| [`cooling/`](cooling/README.md) | Управление охлаждением, кривыми кулеров и питанием Lenovo Legion | `/etc/legion_linux/`, `/etc/modprobe.d/` |
 
 В каждом каталоге есть отдельная инструкция с описанием файлов, зависимостей и способов проверки.
 
@@ -23,7 +24,8 @@
 - двухмониторный шаблон: `DP-1` 2560×1440 и `DP-2` 3840×2160;
 - Kitty с Fish, Nerd Font, прозрачностью и темой Noctalia;
 - Fish с Tide и удобной обёрткой `pac` над `paru`, `yay` или `pacman`;
-- Yazi с показом скрытых файлов и привычными клавишами копирования/вставки.
+- Yazi с показом скрытых файлов и привычными клавишами копирования/вставки;
+- аппаратное управление охлаждением и кастомными кривыми кулеров для Lenovo Legion (`cooling/`).
 
 ## Зависимости
 
@@ -35,10 +37,10 @@ sudo pacman -S --needed \
   kitty fish yazi fd micro firefox nautilus polkit-kde-agent ttf-hack-nerd
 ```
 
-Noctalia v5 устанавливается из AUR:
+Noctalia v5 и утилиты управления Lenovo Legion устанавливаются из AUR:
 
 ```bash
-paru -S noctalia-git
+paru -S noctalia-git lenovolegionlinux-dkms-git lenovolegionlinux-git
 ```
 
 Вместо `paru` можно использовать другой AUR helper. `xwayland-satellite` нужен X11-приложениям; если они не используются, пакет необязателен.
@@ -70,6 +72,12 @@ for app in niri kitty fish yazi; do
   mkdir -p "$HOME/.config/$app"
   cp -a "$HOME/Arch-full-config/$app/." "$HOME/.config/$app/"
 done
+```
+
+Для установки и применения параметров охлаждения Lenovo Legion:
+
+```bash
+sudo ./cooling/install.sh
 ```
 
 Команды выше объединяют файлы с уже существующими каталогами. Если нужен полностью чистый набор, сначала вручную перенесите старые каталоги в резервную копию.
