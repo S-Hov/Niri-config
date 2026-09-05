@@ -12,7 +12,7 @@
 | [`kitty/`](kitty/README.md) | Терминал, Nerd Font и цветовая тема Noctalia | `~/.config/kitty/` |
 | [`fish/`](fish/README.md) | Интерактивная оболочка, Tide, Fisher и команда `pac` | `~/.config/fish/` |
 | [`yazi/`](yazi/README.md) | Терминальный файловый менеджер и пользовательские клавиши | `~/.config/yazi/` |
-| [`cooling/`](cooling/README.md) | Управление охлаждением, кривыми кулеров и питанием Lenovo Legion | `/etc/legion_linux/`, `/etc/modprobe.d/` |
+| [`cooling/`](cooling/README.md) | Безопасная WMI-кривая вентиляторов Lenovo Legion 83LV | `/usr/local/libexec/`, `/etc/`, systemd |
 
 В каждом каталоге есть отдельная инструкция с описанием файлов, зависимостей и способов проверки.
 
@@ -25,7 +25,7 @@
 - Kitty с Fish, Nerd Font, прозрачностью и темой Noctalia;
 - Fish с Tide и удобной обёрткой `pac` над `paru`, `yay` или `pacman`;
 - Yazi с показом скрытых файлов и привычными клавишами копирования/вставки;
-- аппаратное управление охлаждением и кастомными кривыми кулеров для Lenovo Legion (`cooling/`).
+- агрессивная кривая трёх вентиляторов Lenovo Legion 83LV через штатный `lenovo_wmi_other`, с автоматическим возвратом к BIOS при ошибке.
 
 ## Зависимости
 
@@ -37,11 +37,19 @@ sudo pacman -S --needed \
   kitty fish yazi fd micro firefox nautilus polkit-kde-agent ttf-hack-nerd
 ```
 
-Noctalia v5 и утилиты управления Lenovo Legion устанавливаются из AUR:
+Noctalia v5 устанавливается из AUR:
 
 ```bash
-paru -S noctalia-git lenovolegionlinux-dkms-git lenovolegionlinux-git
+paru -S noctalia-git
 ```
+
+Для охлаждения Lenovo 83LV нужны штатное ядро 7.2+ и утилиты мониторинга:
+
+```bash
+sudo pacman -S --needed linux linux-headers python lm_sensors nvidia-utils
+```
+
+`LenovoLegionLinux`, `legion_laptop force=1` и `legiond` на 83LV/RLCN не используются: они рассчитаны на другую карту EC. Подробности и миграция описаны в [`cooling/README.md`](cooling/README.md).
 
 Вместо `paru` можно использовать другой AUR helper. `xwayland-satellite` нужен X11-приложениям; если они не используются, пакет необязателен.
 
@@ -50,8 +58,8 @@ paru -S noctalia-git lenovolegionlinux-dkms-git lenovolegionlinux-git
 Сначала клонируйте репозиторий и перейдите в него:
 
 ```bash
-git clone <URL-этого-репозитория> ~/Arch-full-config
-cd ~/Arch-full-config
+git clone <URL-этого-репозитория> ~/Projects/Arch-full-config
+cd ~/Projects/Arch-full-config
 ```
 
 Сделайте резервную копию существующих настроек:
@@ -70,17 +78,17 @@ echo "Резервная копия: $backup"
 ```bash
 for app in niri kitty fish yazi; do
   mkdir -p "$HOME/.config/$app"
-  cp -a "$HOME/Arch-full-config/$app/." "$HOME/.config/$app/"
+  cp -a "$HOME/Projects/Arch-full-config/$app/." "$HOME/.config/$app/"
 done
 ```
 
-Для установки и применения параметров охлаждения Lenovo Legion:
+Для установки WMI-кривой Lenovo Legion 83LV:
 
 ```bash
 sudo ./cooling/install.sh
 ```
 
-Команды выше объединяют файлы с уже существующими каталогами. Если нужен полностью чистый набор, сначала вручную перенесите старые каталоги в резервную копию.
+Установщик сначала проверит модель, ядро, WMI-диапазоны и выполнит пятисекундный безопасный тест. Старое несовместимое решение будет отключено и сохранено в `/var/backups`.
 
 ## Обязательная настройка после установки
 
@@ -102,6 +110,8 @@ niri validate
 fish -n ~/.config/fish/config.fish
 kitty --debug-config
 yazi --debug
+systemctl status legion-fan-curve.service
+sensors lenovo_wmi_other-virtual-0
 ```
 
 `kitty --debug-config` запускает Kitty и печатает разобранную конфигурацию. `yazi --debug` полезен для проверки окружения и доступных зависимостей.
@@ -112,6 +122,7 @@ yazi --debug
 - `fish/fish_variables` содержит сохранённые universal variables и оформление Tide. Перед публикацией изменений стоит проверять, что туда не попали токены или приватные пути.
 - Файлы в `fish/functions/`, `fish/completions/` и `fish/conf.d/` в основном установлены Fisher и Tide. Пользовательская логика находится в `fish/config.fish`.
 - Noctalia хранит собственные настройки отдельно; этот репозиторий настраивает её интеграцию с Niri, но не заменяет конфигурацию самой оболочки.
+- Раздел `cooling/` намеренно привязан к DMI `83LV`; на другой модели установщик завершится без записи в оборудование.
 
 ## Полезные ссылки
 
@@ -121,3 +132,4 @@ yazi --debug
 - [Kitty: конфигурация](https://sw.kovidgoyal.net/kitty/conf/)
 - [Fish: документация](https://fishshell.com/docs/current/)
 - [Yazi: конфигурация](https://yazi-rs.github.io/docs/configuration/overview/)
+- [Linux Lenovo WMI Other driver](https://github.com/torvalds/linux/blob/master/drivers/platform/x86/lenovo/wmi-other.c)

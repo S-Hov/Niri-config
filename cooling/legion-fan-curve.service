@@ -1,0 +1,25 @@
+[Unit]
+Description=Safe Lenovo 83LV WMI fan curve
+Documentation=https://docs.kernel.org/hwmon/hwmon-kernel-api.html
+After=systemd-modules-load.service power-profiles-daemon.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /usr/local/libexec/legion-fan-curve.py --config /etc/legion-fan-curve.json
+ExecStopPost=/usr/bin/python3 /usr/local/libexec/legion-fan-curve.py --reset
+Restart=on-failure
+RestartSec=3s
+TimeoutStopSec=8s
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectHome=yes
+ProtectSystem=strict
+ProtectControlGroups=yes
+ProtectKernelLogs=yes
+ProtectKernelModules=yes
+RestrictAddressFamilies=AF_UNIX
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+
+[Install]
+WantedBy=multi-user.target
