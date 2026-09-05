@@ -9,6 +9,24 @@ if [ "$EUID" -ne 0 ]; then
     exit 1
 fi
 
+# RLCN/83LV (Legion R9000P ADR10, EC 0x5508) is not supported by the
+# LenovoLegionLinux fan-curve backend yet. With force=1 the driver falls back
+# to the old GKCN memory map: temperatures/RPM become garbage and curve writes
+# are partial. Refuse to touch the EC on this hardware.
+PRODUCT_NAME="$(cat /sys/class/dmi/id/product_name 2>/dev/null || true)"
+BIOS_VERSION="$(cat /sys/class/dmi/id/bios_version 2>/dev/null || true)"
+if [[ "$PRODUCT_NAME" == "83LV" || "$BIOS_VERSION" == RLCN* ]]; then
+    cat >&2 <<EOF
+Ошибка: $PRODUCT_NAME / $BIOS_VERSION пока не поддерживает пользовательские
+кривые LenovoLegionLinux. force=1 ошибочно выбирает таблицу GKCN и может
+повредить кривую в EC. Установка остановлена без изменений.
+
+Используйте штатный профиль Performance (Fn+Q, красный индикатор) и не
+включайте maximumfanspeed: на RLCN он может не выключиться до перезагрузки.
+EOF
+    exit 2
+fi
+
 echo "==> 1. Копирование параметров модуля ядра в /etc/modprobe.d/..."
 cp "$SCRIPT_DIR/modprobe/legion.conf" /etc/modprobe.d/legion.conf
 
@@ -17,42 +35,11 @@ mkdir -p /etc/legion_linux
 cp "$SCRIPT_DIR/presets/"*.yaml /etc/legion_linux/
 cp "$SCRIPT_DIR/presets/legiond.ini" /etc/legion_linux/
 
-echo "==> 3. Применение патча совместимости для legion.py..."
-python3 -c '
-import glob
-import sys
-
-matches = glob.glob("/usr/lib/python3*/site-packages/legion_linux/legion.py")
-if not matches:
-    print("Внимание: legion.py не найден в python site-packages. Убедитесь, что установлен lenovolegionlinux-git.")
-    sys.exit(0)
-
-path = matches[0]
-with open(path, "r", encoding="utf-8") as f:
-    content = f.read()
-
-target = """    @staticmethod
-    def _write_file(file_path, value):
-        with open(file_path, "w", encoding=DEFAULT_ENCODING) as filepointer:
-            filepointer.write(str(value))"""
-
-replacement = """    @staticmethod
-    def _write_file(file_path, value):
-        try:
-            with open(file_path, "w", encoding=DEFAULT_ENCODING) as filepointer:
-                filepointer.write(str(value))
-        except OSError:
-            pass"""
-
-if target in content:
-    with open(path, "w", encoding="utf-8") as f:
-        f.write(content.replace(target, replacement))
-    print("Патч успешно применен к:", path)
-elif replacement in content:
-    print("Патч уже был применен ранее к:", path)
-else:
-    print("Сигнатура _write_file не совпала или уже модифицирована.")
-'
+echo "==> 3. Проверка установленного LenovoLegionLinux..."
+command -v legion_cli >/dev/null 2>&1 || {
+    echo "Ошибка: legion_cli не найден. Установите lenovolegionlinux-git." >&2
+    exit 1
+}
 
 echo "==> 4. Перезагрузка модуля ядра legion_laptop..."
 if lsmod | grep -q "^legion_laptop"; then

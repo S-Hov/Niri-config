@@ -1,4 +1,4 @@
-name: balanced-ac
+name: balanced-battery
 entries:
 - fan1_speed: 1800
   fan2_speed: 1800
